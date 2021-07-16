@@ -1,41 +1,53 @@
 const { response } = require('express');
-const { validationResult } = require('express-validator');
+const Motorista = require('../models/motorista');
 
-const crearUsuario = ( req, res = response ) =>{
+const crearMotorista = async ( req, res = response ) =>{
 
     const { name, lastName, phone, email, password, registerDate , status } = req.body;
 
-    const errors = validationResult( req );
-    
-    if ( !errors.isEmpty() ){
+    try {
+    //Verificar email
+    let usuario = await Motorista.findOne({ email: email });
+    if ( usuario ) {
         return res.status(400).json({
             ok: false,
-            msg: errors.mapped()
-        })
+            msg: 'El usuario ya existe con ese email.'
+        });
     }
 
-    console.log( );
-        return res.json(
+    //Crear usuario con el modelo.
+    motorista = new Motorista( req.body );
+
+    //Hashear contrasenia
+
+
+    //Generar JWT
+
+    //Crear usuario de BD
+    motorista.save();
+
+    //Generar respuesta
+    return res.status(201).json({
+        ok: true,
+        uid: motorista.id,
+        name,
+    });
+
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(
             {
-                ok: true,
-                msg: 'Nuevo usuarios',
+                ok: false,
+                msg: 'Por favor hable con admin.',
             }
         );
+    }
 }
 
-const loginUsuario = ( req, res = response ) => {
-
-    const errors = validationResult( req );
-    
-    if ( !errors.isEmpty() ){
-        return res.status(400).json({
-            ok: false,
-            msg: errors.mapped()
-        })
-    }
+const loginMotorista = ( req, res = response ) => {
     
     const { email, password } = req.body;
-    console.log( email, password )
     return res.json(
         {
             ok: true,
@@ -55,7 +67,7 @@ const revalidarToken = ( req, res = response ) => {
 
 
 module.exports = {
-    crearUsuario,
-    loginUsuario,
+    crearMotorista,
+    loginMotorista,
     revalidarToken,
 }

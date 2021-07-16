@@ -3,6 +3,8 @@ let bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
 
+let database = require('./modules/database');
+
 //Definicion de Routes
 let motoristarRouter = require('./routes/auth-motorista');
 

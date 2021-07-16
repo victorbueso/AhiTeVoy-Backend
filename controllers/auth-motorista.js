@@ -74,7 +74,7 @@ const loginMotorista = async ( req, res = response ) => {
             uid: dbUser.id,
             name: dbUser.name,
             token
-        })
+        });
 
 
     } catch (error) {
@@ -86,24 +86,16 @@ const loginMotorista = async ( req, res = response ) => {
     }
 }
 
-const revalidarToken = ( req, res = response ) => {
+const revalidarToken = async ( req, res = response ) => {
 
-    const token = req.header('x-token');
-
-    if ( !token ) {
-        return res.status(401).json({
-            ok: false,
-            msg: 'Error en el token.'
-        });
-    }
-
-    return res.json(
-        {
+    const { uid } = req;
+    const token = await generarJWT( uid );
+    return res.json({
             ok: true,
             msg: 'Renew',
+            uid,
             token
-        }
-    );
+    });
 }
 
 

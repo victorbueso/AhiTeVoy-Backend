@@ -35,10 +35,13 @@ router.post('/', async (req, res) => {
 
         const token = await generarJWT( clientRouter._id );
         await clientRouter.save();
-        return res.status(201).json({ token, 'idClient': clientRouter._id });
+        return res.status(201).json({ ok: true, token, 'idClient': clientRouter._id, 'correo': clientRouter.correo });
 
     } catch (error) {
-        return res.send(error);
+        return res.status(500).json({
+            ok: false,
+            message: 'Error 500: Se ha encontrado problemas en el servidor para guardar el usuario.'
+        });
     }
 
     /*clientRouter.save().then(result => {
@@ -68,10 +71,13 @@ router.post('/signin', async (req, res) => {
     
         //const token = jwt.sign({ _id: user._id }, 'secretkey');
         const token = await generarJWT(user._id);
-        return res.status(200).json({ token, 'idClient': user._id });
+        return res.status(200).json({ok: true, token, 'idClient': user._id, 'correo': user.correo });
 
     } catch (error) {
-        return res.send(error);
+        return res.status(500).json({
+            ok: false,
+            message: 'Error 500: Se ha encontrado problemas en el servidor para iniciar sesión con el usuario.'
+        });
     }
 });
 

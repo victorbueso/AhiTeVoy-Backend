@@ -1,5 +1,6 @@
 const { response } = require('express');
 const Motorista = require('../models/motorista');
+const bcrypt = require('bcryptjs');
 
 const crearMotorista = async ( req, res = response ) =>{
 
@@ -19,7 +20,8 @@ const crearMotorista = async ( req, res = response ) =>{
     motorista = new Motorista( req.body );
 
     //Hashear contrasenia
-
+    const salt = bcrypt.genSaltSync();
+    motorista.password = bcrypt.hashSync( password, salt );
 
     //Generar JWT
 

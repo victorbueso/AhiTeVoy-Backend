@@ -91,14 +91,15 @@ const loginMotorista = async ( req, res = response ) => {
 const revalidarToken = async ( req, res = response ) => {
 
     const { uid } = req;
+    let bdUser = await Motorista.findOne({ uid: this.uid });
     const token = await generarJWT( uid );
     return res.json({
             ok: true,
             msg: 'Renew',
-            uid: dbUser.id,
-            name: dbUser.name,
-            lastName: dbUser.lastName,
-            status: dbUser.status,
+            uid,
+            name: bdUser.name,
+            lastName: bdUser.lastName,
+            status: bdUser.status,
             token
     });
 }

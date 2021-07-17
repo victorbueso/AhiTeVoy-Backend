@@ -73,6 +73,8 @@ const loginMotorista = async ( req, res = response ) => {
             ok: true,
             uid: dbUser.id,
             name: dbUser.name,
+            lastName: dbUser.lastName,
+            status: dbUser.status,
             token
         });
 
@@ -93,7 +95,10 @@ const revalidarToken = async ( req, res = response ) => {
     return res.json({
             ok: true,
             msg: 'Renew',
-            uid,
+            uid: dbUser.id,
+            name: dbUser.name,
+            lastName: dbUser.lastName,
+            status: dbUser.status,
             token
     });
 }

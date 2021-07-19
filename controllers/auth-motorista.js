@@ -30,6 +30,8 @@ const crearMotorista = async ( req, res = response ) => {
             ok: true,
             uid: motorista.id,
             name,
+            lastName,
+            status,
             token
         });
     } catch (error) {

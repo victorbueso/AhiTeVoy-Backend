@@ -21,7 +21,7 @@ router.post('/new', [
 
 router.post('/login', [
     check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'El password es obligatorio').isLength({ min:6 }),
+    check('password', 'El password es obligatorio').isLength({ max:10 }),
     validarCampos
 ], loginMotorista);
 

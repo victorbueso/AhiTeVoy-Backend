@@ -9,7 +9,6 @@ const loginAdmin = async ( req, res = response ) => {
     const { email, password } = req.body;
 
     try {
-        
         const dbUser = await Admin.findOne({ email });
         if ( !dbUser ) {
             return res.status(400).json({
@@ -33,9 +32,6 @@ const loginAdmin = async ( req, res = response ) => {
         return res.json({
             ok: true,
             uid: dbUser.id,
-            name: dbUser.name,
-            lastName: dbUser.lastName,
-            status: dbUser.status,
             token
         });
 

@@ -73,6 +73,8 @@ const loginMotorista = async ( req, res = response ) => {
             ok: true,
             uid: dbUser.id,
             name: dbUser.name,
+            lastName: dbUser.lastName,
+            status: dbUser.status,
             token
         });
 
@@ -89,11 +91,15 @@ const loginMotorista = async ( req, res = response ) => {
 const revalidarToken = async ( req, res = response ) => {
 
     const { uid } = req;
+    let bdUser = await Motorista.findOne({ uid: this.uid });
     const token = await generarJWT( uid );
     return res.json({
             ok: true,
             msg: 'Renew',
             uid,
+            name: bdUser.name,
+            lastName: bdUser.lastName,
+            status: bdUser.status,
             token
     });
 }

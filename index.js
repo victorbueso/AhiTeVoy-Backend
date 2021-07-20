@@ -5,6 +5,7 @@ const path = require('path');
 
 const clientesRouter = require('./routes/clientes-router');
 const categoriasRouter = require('./routes/categorias-router');
+const adminRouter = require('./routes/auth-admin');
 require('dotenv').config();
 
 let database = require('./modules/database');
@@ -25,6 +26,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/auth/motorista', motoristarRouter);
 app.use('/cliente', clientesRouter);
 app.use('/categoria', categoriasRouter);
+app.use('/admin', adminRouter);
 app.use('/uploads', express.static(path.resolve('uploads')));
 
 app.listen(process.env.PORT || 3000, () => {

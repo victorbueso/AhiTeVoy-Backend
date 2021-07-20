@@ -13,15 +13,15 @@ const loginAdmin = async ( req, res = response ) => {
         if ( !dbUser ) {
             return res.status(400).json({
                 ok: false,
-                msg: 'Credenciales no son validas.'
+                msg: 'Credenciales no son validas'
             });
         }
 
-        const validPassword = bcrypt.compareSync( password, dbUser.password );
-        if ( !validPassword ) {
+       
+        if ( password != dbUser.password ) {
             return res.status(400).json({
                 ok: false,
-                msg: 'Credenciales no son validas.'
+                msg: 'Credenciales no son validas'
             });
         }
 

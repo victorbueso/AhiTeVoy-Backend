@@ -12,4 +12,4 @@ const AdminSchema = Schema({
     },
 });
 
-module.exports = model('Admin', AdminSchema );
+module.exports = model('Admins', AdminSchema );

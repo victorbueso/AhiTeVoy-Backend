@@ -11,6 +11,7 @@ const categoria = require('../models/categoria');
 router.post('/', (req, res) => {
     let categoriesRouter = new categoria({
         nombre: req.body.nombre,
+        codigoCategoria: req.body.codigoCategoria,
         imagen: req.body.imagen
     });
 

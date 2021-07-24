@@ -17,7 +17,7 @@ let storage = multer.diskStorage({
 let upload = multer({ storage });
 
 //Crear una nueva empresa
-router.post('/', upload.single('i'), async (req, res) => {
+router.post('/', upload.single('image'), async (req, res) => {
     let empresasRouter = new empresa({
         nombreEmpresa: req.body.nombreEmpresa,
         codigoEmpresa: req.body.codigoEmpresa,
@@ -28,7 +28,7 @@ router.post('/', upload.single('i'), async (req, res) => {
         codigoCategoria: req.body.codigoCategoria,
         descripcion: req.body.descripcion,
         horario: req.body.horario,
-        logo: '',
+        logo: req.file.path,
     });
 
     empresasRouter.save().then(result => {

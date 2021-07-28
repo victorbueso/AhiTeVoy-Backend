@@ -5,7 +5,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs-extra');
 const uuid = require("uuid");
-const empresa = require('../models/empresa');
+const producto = require('../models/producto');
 
 let storage = multer.diskStorage({
     destination: 'uploads',
@@ -17,21 +17,18 @@ let storage = multer.diskStorage({
 let upload = multer({ storage });
 
 //Crear una nueva empresa
-router.post('/', upload.single('image'), async (req, res) => {
-    let empresasRouter = new empresa({
-        nombreEmpresa: req.body.nombreEmpresa,
-        codigoEmpresa: req.body.codigoEmpresa,
-        fechaCreacion: req.body.fechaCreacion,
-        direccion: req.body.direccion,
-        calificacion: req.body.calificacion,
-        correo: req.body.correo,
-        codigoCategoria: req.body.codigoCategoria,
-        descripcion: req.body.descripcion,
-        horario: req.body.horario,
-        logo: req.file.path,
+router.post('/', upload.single('imagen'), async (req, res) => {
+    let productosRouter = new producto({
+        nombreProducto: req.body.nombreProducto,
+        codigoProducto: req.body.codigoProducto,
+        descripcionProducto: req.body.descripcionProducto,
+        disponible: req.body.disponible,
+        fragil: req.body.fragil,
+        codigoEmpProd: req.body.codigoEmpProd,
+        imagen: req.file.path,
     });
 
-    empresasRouter.save().then(result => {
+    productosRouter.save().then(result => {
         res.send(result);
         res.end();
     }).catch(error => {
@@ -40,9 +37,9 @@ router.post('/', upload.single('image'), async (req, res) => {
     });
 });
 
-//Obtener una empresa
+//Obtener un producto
 router.get('/:id', (req, res) => {
-    empresa.find({ _id: req.params.id }).then(result => {
+    producto.find({ _id: req.params.id }).then(result => {
         res.send(result[0]);
         res.end();
     }).catch(error => {
@@ -51,9 +48,9 @@ router.get('/:id', (req, res) => {
     });
 });
 
-//Obtener empresas por categoria
-router.get('/cats/:catCod', (req, res) => {
-    empresa.find({ codigoCategoria: req.params.catCod })
+//Obtener producto por empresa
+router.get('/prods/:prodCod', (req, res) => {
+    producto.find({ codigoEmpresa: req.params.prodCod })
         .then(result => {
             res.send(result);
             res.end();
@@ -63,9 +60,9 @@ router.get('/cats/:catCod', (req, res) => {
         });
 });
 
-//Obtener todas las empresas
+//Obtener todas los productos
 router.get('/', function(req, res) {
-    empresa.find().then(result => {
+    producto.find().then(result => {
         res.send(result);
         res.end();
     }).catch(error => {
@@ -74,22 +71,19 @@ router.get('/', function(req, res) {
     });
 });
 
-//Actualizar una empresa
-router.put('update/:id', upload.single('image'), function(req, res){
-    empresa.updateOne({
+//Actualizar un producto
+router.put('update/:id', upload.single('imagen'), function(req, res){
+    producto.updateOne({
         _id: req.params.id
     },
     {
-        nombreEmpresa: req.body.nombreEmpresa,
-        codigoEmpresa: req.body.codigoEmpresa,
-        fechaCreacion: req.body.fechaCreacion,
-        direccion: req.body.direccion,
-        calificacion: req.body.calificacion,
-        correo: req.body.correo,
-        codigoCategoria: req.body.codigoCategoria,
-        descripcion: req.body.descripcion,
-        horario: req.body.horario,
-        logo: req.body.path
+        nombreProducto: req.body.nombreProducto,
+        codigoProducto: req.body.codigoProducto,
+        descripcionProducto: req.body.descripcionProducto,
+        disponible: req.body.disponible,
+        fragil: req.body.fragil,
+        codigoEmpProd: req.body.codigoEmpProd,
+        imagen: req.file.path,
     }).then(result => {
         res.send(result);
         res.end();
@@ -99,9 +93,9 @@ router.put('update/:id', upload.single('image'), function(req, res){
     });
 });
 
-//Eliminar una empresa
+//Eliminar un producto
 router.delete('/:id', function(req, res) {
-    empresa.remove({
+    producto.remove({
         _id: req.params.id
     }).then(result => {
         res.send(result);

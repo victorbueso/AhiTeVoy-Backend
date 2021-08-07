@@ -9,6 +9,7 @@ const productosRouter = require('./routes/productos-router');
 const categoriasRouter = require('./routes/categorias-router');
 const adminRouter = require('./routes/auth-admin');
 const ordenesRouter = require('./routes/ordenes-router');
+const motoristarouter = require('./routes/motorista-router')
 require('dotenv').config();
 
 let database = require('./modules/database');
@@ -33,6 +34,7 @@ app.use('/empresas', empresasRouter);
 app.use('/productos', productosRouter);
 app.use('/admin', adminRouter);
 app.use('/ordenes', ordenesRouter);
+app.use('/motorista', motoristarouter);
 app.use('/uploads', express.static(path.resolve('uploads')));
 
 app.listen(process.env.PORT || 3000, () => {

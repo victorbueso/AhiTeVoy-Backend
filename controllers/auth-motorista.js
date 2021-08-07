@@ -95,7 +95,7 @@ const loginMotorista = async ( req, res = response ) => {
 const revalidarToken = async ( req, res = response ) => {
 
     const { uid } = req;
-    let dbUser = await Motorista.findOne({ uid: this.uid });
+    let dbUser = await Motorista.findById(uid);
     const token = await generarJWT( uid );
     return res.json({
             ok: true,

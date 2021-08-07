@@ -29,6 +29,9 @@ const MotoristaSchema = Schema({
         type: Boolean,
         required: true,
     },
+    ordenes: {
+        type: Array
+    }
 });
 
 module.exports = model('Motoristas', MotoristaSchema );

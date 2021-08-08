@@ -38,7 +38,11 @@ router.post('/add/:idUsuario', ( req, res ) => {
 
 //Servicio para ordenes disponibles
 router.get('/pendientes/:idUsuario', ( req, res ) => {
-    Motorista.find({ _id: mongoose.Types.ObjectId(req.params.idUsuario), "ordenes.entregada": false}).then( result =>{
+    Motorista.find(
+        { _id: mongoose.Types.ObjectId(req.params.idUsuario), 
+        "ordenes.entregada": false},
+        {"ordenes.$": true}
+    ).then( result =>{
         res.send(result);
         res.end();
     }).catch( error =>{
@@ -49,8 +53,11 @@ router.get('/pendientes/:idUsuario', ( req, res ) => {
 
 //Servicio para ordenes disponibles
 router.get('/entregadas/:idUsuario', ( req, res ) => {
-    Motorista.find({ _id: mongoose.Types.ObjectId(req.params.idUsuario), 
-        "ordenes.entregada": true}).then( result =>{
+    Motorista.find(
+        { _id: mongoose.Types.ObjectId(req.params.idUsuario), 
+        "ordenes.entregada": true},
+        {"ordenes.$": true}
+    ).then( result =>{
         res.send(result);
         res.end();
     }).catch( error =>{

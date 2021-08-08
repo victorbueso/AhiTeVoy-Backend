@@ -2,15 +2,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-
+const http = require('http');
 const clientesRouter = require('./routes/clientes-router');
 const empresasRouter = require('./routes/empresas-router');
 const productosRouter = require('./routes/productos-router');
 const categoriasRouter = require('./routes/categorias-router');
 const adminRouter = require('./routes/auth-admin');
 const ordenesRouter = require('./routes/ordenes-router');
-const motoristarouter = require('./routes/motorista-router')
+const motoristarouter = require('./routes/motorista-router');
 require('dotenv').config();
+
 
 let database = require('./modules/database');
 
@@ -18,8 +19,12 @@ let database = require('./modules/database');
 let motoristarRouter = require('./routes/auth-motorista');
 
 var app = express();
+var server = http.createServer(app);
+var io = require('socket.io')(server);
+
 
 //Middleware (Debe ingresarse respectivamente en el orden establecido.)
+app.set('socketio', io);
 app.use(cors());
 app.use(express.static('public'));
 app.set('port', process.env.PORT || 3000);
@@ -37,6 +42,6 @@ app.use('/ordenes', ordenesRouter);
 app.use('/motorista', motoristarouter);
 app.use('/uploads', express.static(path.resolve('uploads')));
 
-app.listen(process.env.PORT || 3000, () => {
+server.listen(process.env.PORT || 3000, () => {
     console.log(`App listening on ${process.env.PORT || 3000} port!`);
 });

@@ -20,7 +20,17 @@ let motoristarRouter = require('./routes/auth-motorista');
 
 var app = express();
 var server = http.createServer(app);
-var io = require('socket.io')(server);
+var io = require('socket.io')(server, {
+    cors: {
+        origins: ['https://localhost:3000']
+    }
+});
+
+/* io.on('connection', cliente => {
+    console.log('Cliente conectado.');
+})
+
+io.emit('connection'); */
 
 
 //Middleware (Debe ingresarse respectivamente en el orden establecido.)
@@ -41,6 +51,10 @@ app.use('/admin', adminRouter);
 app.use('/ordenes', ordenesRouter);
 app.use('/motorista', motoristarouter);
 app.use('/uploads', express.static(path.resolve('uploads')));
+module.exports = {
+    io
+}
+require('./sockets/socket');
 
 server.listen(process.env.PORT || 3000, () => {
     console.log(`App listening on ${process.env.PORT || 3000} port!`);

@@ -1,4 +1,4 @@
-const { desconectar, mensaje, confUsuario } = require('./ordenes');
+const { desconectar, mensaje, confUsuario, direccionMotorista, moverMotorista } = require('./ordenes');
 const { io } = require('../index');
 
 io.on('connection', (cliente, io) => {
@@ -7,15 +7,26 @@ io.on('connection', (cliente, io) => {
     const idHandShake = cliente.id;
     
     //Extraemos el nombre de la sala
-    const nameRoom  = 'Motoristas-salas';
+    const nameRoom  = cliente.handshake.payload;
 
     //Conectamos cliente al sala.
-    cliente.join(nameRoom);
- 
+    
+
+    cliente.on('ordenes-conectar', (payload) =>{
+        cliente.join(payload);
+        this.nameRoom = payload;
+        console.log(`Hola dipositivo: ${idHandShake} se unio a la sala ${this.nameRoom}`);
+    }) ;
+
+    //Enviar direccion en tiempo real motorista.
+    cliente.on('enviar-dir-motorista', direccionMotorista);
+
+    //Mover direccion del motorista en tiempo real.
+    cliente.on('mover-dir-motorista', moverMotorista);
+    
     //Configurar usuario conectado
     cliente.on('configurar-usuario', confUsuario) 
 
-    console.log(`Hola dipositivo: ${idHandShake} se unio a la sala ${nameRoom}`);
     //Desconectar
     cliente.on('disconnect', desconectar);
 

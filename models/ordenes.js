@@ -6,7 +6,7 @@ const SchemaOrdenes = new Schema({
         required: true
     },
     destinoMapa: {
-        type: String,
+        type: Array,
         required: true
     },
     pedido: {

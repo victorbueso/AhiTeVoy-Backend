@@ -26,12 +26,6 @@ var io = require('socket.io')(server, {
     }
 });
 
-/* io.on('connection', cliente => {
-    console.log('Cliente conectado.');
-})
-
-io.emit('connection'); */
-
 
 //Middleware (Debe ingresarse respectivamente en el orden establecido.)
 app.set('socketio', io);

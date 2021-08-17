@@ -45,6 +45,28 @@ router.post('/:idOrden', ( req, res ) => {
     });
 });
 
+
+//Servicio para hacer como entregada la orden
+router.post('/entregada/:idOrden', ( req, res ) => {
+    Ordenes.updateOne(
+        {
+            _id: req.params.idOrden
+        },
+        { 
+            $set: { 
+                entregada: true
+            } 
+        },
+        ).then( result =>{
+        res.send(result);
+        res.end();
+    }).catch( error =>{
+        res.send(error);
+        res.end();
+    });
+});
+
+
 //Servicio para ver el historial.
 router.get('/historial/$:id', async ( req, res ) => {
     Ordenes.find().then( result =>{

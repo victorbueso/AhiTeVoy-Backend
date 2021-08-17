@@ -1,4 +1,4 @@
-const { desconectar, mensaje, confUsuario, direccionMotorista, moverMotorista } = require('./ordenes');
+const { desconectar, mensaje, confUsuario, direccionMotorista, moverMotorista, actualizarOrden } = require('./ordenes');
 const { io } = require('../index');
 
 io.on('connection', (cliente, io) => {
@@ -9,14 +9,28 @@ io.on('connection', (cliente, io) => {
     //Extraemos el nombre de la sala
     const nameRoom  = cliente.handshake.payload;
 
-    //Conectamos cliente al sala.
     
-
+    //Conectamos cliente al sala.
     cliente.on('ordenes-conectar', (payload) =>{
         cliente.join(payload);
         this.nameRoom = payload;
         console.log(`Hola dipositivo: ${idHandShake} se unio a la sala ${this.nameRoom}`);
     }) ;
+
+    //Con esto escuchamos las emisiones del motorista
+    cliente.on('ordenes', mensaje );
+
+
+
+    //Conectamos al motorista y el cliente creando su sala por id de Orden
+    cliente.on('estado-conectar', (payload) =>{
+        cliente.join(payload.nameRoom);
+        console.log(`Tomaste la orden ${this.nameRoom}`);
+    }) ;
+
+    //Con esto escuchamos las emisiones del estado de la orden por motorista motorista
+    cliente.on('estado', actualizarOrden );
+
 
     //Enviar direccion en tiempo real motorista.
     cliente.on('enviar-dir-motorista', direccionMotorista);
@@ -29,10 +43,6 @@ io.on('connection', (cliente, io) => {
 
     //Desconectar
     cliente.on('disconnect', desconectar);
-
-    //Con esto escuchamos las emisiones ordenes del cliente.
-    cliente.on('ordenes', mensaje );
-    
-})
+});
 
 io.emit('connection'); 

@@ -14,6 +14,13 @@ const mensaje = async ( payload ) =>{
     io.to('motorista-ordenes').emit('orden-tomada', ordenes);
 }
 
+//Mandamos a la sala de orden la actualizacino, el cliente solo va escuchar.
+const actualizarOrden = async (payload) =>{
+    console.log(`cambiaste estado nuevo estado ${payload}`);
+    let orden = await Ordenes.find({"_id": payload});
+    io.to(payload).emit('orden-tomada', orden);
+}
+
 //Escuchamos las peticiones
 const confUsuario = async ( payload ) =>{
     //Aqui agregamos a los usuarios conectados.
@@ -22,9 +29,7 @@ const confUsuario = async ( payload ) =>{
 }
 
 const direccionMotorista = async ( payload ) =>{
-
 }
-
 
 const moverMotorista = async ( payload ) =>{
     let coordenadas = {
@@ -39,5 +44,6 @@ module.exports = {
     mensaje,
     confUsuario,
     direccionMotorista,
-    moverMotorista
+    moverMotorista,
+    actualizarOrden
 };

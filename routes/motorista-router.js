@@ -36,6 +36,28 @@ router.post('/add/:idUsuario', ( req, res ) => {
 });
 
 
+//Servicio para actualizar a entregada en el motorista
+router.post('/terminarEntrega/:idUsuario', ( req, res ) => {
+    Motorista.update(
+        {
+            _id: mongoose.Types.ObjectId(req.params.idUsuario),
+            "ordenes._id": mongoose.Types.ObjectId(req.body.idOrden)
+        }, 
+        {
+            $set: {
+                "ordenes.$.entregada": true
+            }
+        },
+    ).then( result =>{
+        res.send(result);
+        res.end();
+    }).catch( error =>{
+        res.send(error);
+        res.end();
+    });
+});
+
+
 //Servicio para ordenes disponibles
 router.get('/pendientes/:idUsuario', ( req, res ) => {
     Motorista.find(

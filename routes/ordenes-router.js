@@ -45,7 +45,7 @@ router.post('/:idOrden', ( req, res ) => {
     });
 });
 
-
+//Servicio para ver el historial.
 router.get('/historial/$:id', async ( req, res ) => {
     Ordenes.find().then( result =>{
         res.send(result);
@@ -55,5 +55,27 @@ router.get('/historial/$:id', async ( req, res ) => {
         res.end();
     });
 });
+
+
+//Servicio para actualizar el estado de la orden.
+router.post('/status/:idOrden', ( req, res ) => {
+    Ordenes.updateOne(
+        {
+            _id: req.params.idOrden
+        },
+        { 
+            $set: { 
+                statusOrden: req.body.estadoOrden
+            } 
+        },
+        ).then( result =>{
+        res.send(result);
+        res.end();
+    }).catch( error =>{
+        res.send(error);
+        res.end();
+    });
+});
+
 
 module.exports = router;

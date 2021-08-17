@@ -18,7 +18,7 @@ const SchemaOrdenes = new Schema({
         required: true
     },
     statusOrden: {
-        type: Boolean,
+        type: Number,
         required: true
     },
     tomada: {

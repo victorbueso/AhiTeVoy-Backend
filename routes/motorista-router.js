@@ -63,7 +63,7 @@ router.get('/pendientes/:idUsuario', ( req, res ) => {
     Motorista.find(
         { _id: mongoose.Types.ObjectId(req.params.idUsuario), 
         "ordenes.entregada": false},
-        {"ordenes": true}
+        {"ordenes.$": true}
     ).then( result =>{
         res.send(result);
         res.end();

@@ -91,4 +91,50 @@ router.get('/entregadas/:idUsuario', ( req, res ) => {
 });
 
 
+//Servicio para obtener los usuarios aprobados
+router.get('/aprobado', ( req, res ) =>{
+    Motorista.find({status: true})
+    .then( result =>{
+        res.send(result);
+        res.end();
+    }).catch( error =>{
+        res.send(error);
+        res.send();
+    })
+});
+
+//Servicio para obtener los usuarios sin aprobar.
+router.get('/sinaprobar', ( req, res ) =>{
+    Motorista.find({status: false})
+    .then( result =>{
+        res.send(result);
+        res.end();
+    }).catch( error =>{
+        res.send(error);
+        res.send();
+    })
+});
+
+
+//Servicio para aprobar un usuario
+router.get('/aprobar/:idUsuario', ( req, res ) =>{
+    Motorista.update(
+        {
+            _id: mongoose.Types.ObjectId(req.params.idUsuario),
+        }, 
+        {
+            $set: {
+                "status": true
+            }
+        },
+    ).then( result =>{
+        res.send(result);
+        res.end();
+    }).catch( error =>{
+        res.send(error);
+        res.end();
+    });
+});
+
+
 module.exports = router;

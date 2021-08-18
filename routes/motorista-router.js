@@ -60,10 +60,11 @@ router.post('/terminarEntrega/:idUsuario', ( req, res ) => {
 
 //Servicio para ordenes disponibles
 router.get('/pendientes/:idUsuario', ( req, res ) => {
-    Motorista.find(
-        { _id: mongoose.Types.ObjectId(req.params.idUsuario), 
-        "ordenes.entregada": false},
-        {"ordenes.$": true}
+    Motorista.aggregate(
+        [   {$match: {_id : mongoose.Types.ObjectId(req.params.idUsuario)}},
+            {$unwind: '$ordenes'},
+            {$match: {'ordenes.entregada': false, "ordenes.tomada": true}},
+            {$group: {_id: '$_id', ordenes: {$push : '$ordenes'}}}]
     ).then( result =>{
         res.send(result);
         res.end();
@@ -75,10 +76,11 @@ router.get('/pendientes/:idUsuario', ( req, res ) => {
 
 //Servicio para ordenes disponibles
 router.get('/entregadas/:idUsuario', ( req, res ) => {
-    Motorista.find(
-        { _id: mongoose.Types.ObjectId(req.params.idUsuario), 
-        "ordenes.entregada": true},
-        {"ordenes.$": true}
+    Motorista.aggregate(
+    [    {$match: {_id : mongoose.Types.ObjectId(req.params.idUsuario)}},
+        {$unwind: '$ordenes'},
+        {$match: {'ordenes.entregada': true}},
+        {$group: {_id: '$_id', ordenes: {$push : '$ordenes'}}}]
     ).then( result =>{
         res.send(result);
         res.end();

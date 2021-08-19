@@ -25,6 +25,7 @@ router.post('/', upload.single('imagen'), async (req, res) => {
         disponible: req.body.disponible,
         fragil: req.body.fragil,
         codigoEmpProd: req.body.codigoEmpProd,
+        precio: req.body.precio,
         imagen: req.file.path,
     });
 
@@ -50,7 +51,7 @@ router.get('/:id', (req, res) => {
 
 //Obtener producto por empresa
 router.get('/prods/:prodCod', (req, res) => {
-    producto.find({ codigoEmpresa: req.params.prodCod })
+    producto.find({ codigoEmpProd: req.params.prodCod })
         .then(result => {
             res.send(result);
             res.end();
@@ -59,6 +60,32 @@ router.get('/prods/:prodCod', (req, res) => {
             res.end();
         });
 });
+
+//Obtener producto con categoria a la que pertenece
+router.get('/categoria/:codEmp', (req, res) => {
+    producto.aggregate([
+        {
+            $lookup: {
+                from: 'categorias',
+                localField: 'codigoCategoria',
+                foreignField: '_id',
+                as: 'categoriaComision'
+            }
+        },
+        {
+            $match: {
+                "codigoEmpProd": req.params.codEmp
+            }
+        }
+    ])
+    .then(result => {
+        res.send(result);
+        res.end();
+    }).catch(error => {
+        res.send(error);
+        res.end();
+    });
+})
 
 //Obtener todas los productos
 router.get('/', function(req, res) {

@@ -5,9 +5,9 @@ let schema = Schema({
     codigoProducto: {type: String, require: true, unique: true},
     descripcionProducto: String,
     disponible: Number,
-    fragil: Number,
     codigoEmpProd: String,
     imagen: String,
+    precio: Number,
 });
 
 module.exports = model('producto', schema);

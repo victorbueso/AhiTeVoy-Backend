@@ -3,10 +3,9 @@ const { Schema, model } = require('mongoose');
 const SchemaOrdenes = new Schema({
     destino: {
         type: String,
-        required: true
     },
     destinoMapa: {
-        type: Array,
+        type: Schema.Types.Mixed,
         required: true
     },
     pedido: {
@@ -31,12 +30,14 @@ const SchemaOrdenes = new Schema({
     },
     rtnFactura: {
         type: String,
-        required: true
     },
     local: {
         type: String,
-        required: true
     },
+    descripcion: {
+        type: String,
+        required: true
+    }
 })
 
 module.exports = model('ordenes', SchemaOrdenes)

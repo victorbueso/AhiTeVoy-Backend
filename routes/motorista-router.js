@@ -137,4 +137,51 @@ router.post('/aprobar/:idUsuario', ( req, res ) =>{
 });
 
 
+//Servicio para actualizar foto de perfil
+router.post('/profilePic/:idUsuario', ( req, res ) =>{
+    Motorista.updateOne(
+        {
+            _id: mongoose.Types.ObjectId(req.params.idUsuario),
+        }, 
+        {
+            $set: {
+                "imagenUrl": req.body.imagenUrl
+            }
+        },
+    ).then( result =>{
+        res.send(result);
+        res.end();
+    }).catch( error =>{
+        res.send(error);
+        res.end();
+    });
+});
+
+
+
+//Actualizar datos de motorista
+router.post('/updateData/:idUsuario', ( req, res ) => {
+    Motorista.updateOne(
+        {
+            _id: mongoose.Types.ObjectId(req.params.idUsuario),
+        }, 
+        {
+            $set: {
+                name: req.body.name, 
+                lastName: req.body.lastName, 
+                phone: req.body.phone,
+                email: req.body.email,
+                imagenUrl: req.body.imagenUrl
+            }
+        },
+    ).then( result =>{
+        res.send(result);
+        res.end();
+    }).catch( error =>{
+        res.send(error);
+        res.end();
+    });
+});
+
+
 module.exports = router;

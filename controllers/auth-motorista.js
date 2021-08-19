@@ -79,6 +79,7 @@ const loginMotorista = async ( req, res = response ) => {
             email: dbUser.email,
             phone: dbUser.phone,
             status: dbUser.status,
+            imagenUrl: dbUser.imagenUrl,
             token
         });
 
@@ -106,6 +107,7 @@ const revalidarToken = async ( req, res = response ) => {
             email: dbUser.email,
             phone: dbUser.phone,
             status: dbUser.status,
+            imagenUrl: dbUser.imagenUrl,
             token
     });
 }

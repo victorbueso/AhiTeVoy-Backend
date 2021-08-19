@@ -31,6 +31,9 @@ const MotoristaSchema = Schema({
     },
     ordenes: {
         type: Array
+    },
+    imagenUrl: {
+        type: String
     }
 });
 

@@ -184,4 +184,16 @@ router.post('/updateData/:idUsuario', ( req, res ) => {
 });
 
 
+//Servicio para obtener un motorista en concreto
+router.get('/motoristaDato/:idUsuario', ( req, res ) =>{
+    Motorista.find({ _id: mongoose.Types.ObjectId(req.params.idUsuario) })
+    .then( result =>{
+        res.send(result);
+        res.end();
+    }).catch( error =>{
+        res.send(error);
+        res.send();
+    })
+});
+
 module.exports = router;

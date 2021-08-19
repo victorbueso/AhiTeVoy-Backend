@@ -3,6 +3,26 @@ const Ordenes = require('../models/ordenes');
 
 const router = Router();
 
+//Servicio para crear una nueva orden enviada desde el cliente
+router.post('/', (req, res) => {
+    let ordenesRouter = new Ordenes({
+        cliente: '',
+        pedido: req.body.pedido,
+        destinoMapa: req.body.destinoMapa,
+        statusOrden: req.body.statusOrden,
+        tomada: req.body.tomada,
+        entregada: req.body.entregada,
+        descripcion: req.body.descripcion,
+    })
+    ordenesRouter.save().then(result => {
+        res.send(result);
+        res.end();
+    }).catch(error => {
+        res.send(error);
+        res.end();
+    });
+});
+
 //Servicio para ordenes disponibles
 router.get('/all', ( req, res ) => {
     Ordenes.find({"tomada": false}).then( result =>{

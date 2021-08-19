@@ -117,8 +117,8 @@ router.get('/sinaprobar', ( req, res ) =>{
 
 
 //Servicio para aprobar un usuario
-router.get('/aprobar/:idUsuario', ( req, res ) =>{
-    Motorista.update(
+router.post('/aprobar/:idUsuario', ( req, res ) =>{
+    Motorista.updateOne(
         {
             _id: mongoose.Types.ObjectId(req.params.idUsuario),
         }, 

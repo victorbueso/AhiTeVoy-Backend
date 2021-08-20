@@ -117,8 +117,8 @@ router.get('/sinaprobar', ( req, res ) =>{
 
 
 //Servicio para aprobar un usuario
-router.get('/aprobar/:idUsuario', ( req, res ) =>{
-    Motorista.update(
+router.post('/aprobar/:idUsuario', ( req, res ) =>{
+    Motorista.updateOne(
         {
             _id: mongoose.Types.ObjectId(req.params.idUsuario),
         }, 
@@ -136,5 +136,64 @@ router.get('/aprobar/:idUsuario', ( req, res ) =>{
     });
 });
 
+
+//Servicio para actualizar foto de perfil
+router.post('/profilePic/:idUsuario', ( req, res ) =>{
+    Motorista.updateOne(
+        {
+            _id: mongoose.Types.ObjectId(req.params.idUsuario),
+        }, 
+        {
+            $set: {
+                "imagenUrl": req.body.imagenUrl
+            }
+        },
+    ).then( result =>{
+        res.send(result);
+        res.end();
+    }).catch( error =>{
+        res.send(error);
+        res.end();
+    });
+});
+
+
+
+//Actualizar datos de motorista
+router.post('/updateData/:idUsuario', ( req, res ) => {
+    Motorista.updateOne(
+        {
+            _id: mongoose.Types.ObjectId(req.params.idUsuario),
+        }, 
+        {
+            $set: {
+                name: req.body.name, 
+                lastName: req.body.lastName, 
+                phone: req.body.phone,
+                email: req.body.email,
+                imagenUrl: req.body.imagenUrl
+            }
+        },
+    ).then( result =>{
+        res.send(result);
+        res.end();
+    }).catch( error =>{
+        res.send(error);
+        res.end();
+    });
+});
+
+
+//Servicio para obtener un motorista en concreto
+router.get('/motoristaDato/:idUsuario', ( req, res ) =>{
+    Motorista.find({ _id: mongoose.Types.ObjectId(req.params.idUsuario) })
+    .then( result =>{
+        res.send(result);
+        res.end();
+    }).catch( error =>{
+        res.send(error);
+        res.send();
+    })
+});
 
 module.exports = router;

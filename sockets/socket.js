@@ -28,7 +28,7 @@ io.on('connection', (cliente, io) => {
         console.log(`Tomaste la orden ${this.nameRoom}`);
     }) ;
 
-    //Con esto escuchamos las emisiones del estado de la orden por motorista motorista
+    //Con esto escuchamos las emisiones del estado de la orden por motorista motorista y cliente
     cliente.on('estado', actualizarOrden );
 
 

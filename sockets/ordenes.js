@@ -17,8 +17,10 @@ const mensaje = async ( payload ) =>{
 //Mandamos a la sala de orden la actualizacino, el cliente solo va escuchar.
 const actualizarOrden = async (payload) =>{
     console.log(`cambiaste estado nuevo estado ${payload}`);
+    //Hacemos la peticion para que el lo vea.
     let orden = await Ordenes.find({"_id": payload});
-    io.to(payload).emit('orden-tomada', orden);
+
+    io.to(payload).emit('estado', orden);
 }
 
 //Escuchamos las peticiones

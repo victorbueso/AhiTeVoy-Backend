@@ -22,7 +22,7 @@ var app = express();
 var server = http.createServer(app);
 var io = require('socket.io')(server, {
     cors: {
-        origins: ['https://localhost:3000']
+        origins: ['https://deploy-motorista.web.app/']
     }
 });
 
@@ -49,6 +49,6 @@ module.exports = {
 }
 require('./sockets/socket');
 
-server.listen(process.env.PORT || 3000, () => {
-    console.log(`App listening on ${process.env.PORT || 3000} port!`);
+server.listen(app.get('port'), () => {
+    console.log(`App listening on ${app.get('port')} port!`);
 });

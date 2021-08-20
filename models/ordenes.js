@@ -35,7 +35,6 @@ const SchemaOrdenes = new Schema({
     },
     descripcion: {
         type: String,
-        required: true
     }
 })
 

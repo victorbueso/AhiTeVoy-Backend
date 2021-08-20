@@ -96,18 +96,6 @@ router.post('/signin', async (req, res) => {
     }
 });
 
-//Obtener todos los clientes (y el cliente logueado)
-router.get('/actual', (req, res) => {
-    cliente.find()
-        .then(result => {
-            res.send(idUsuario);
-            res.end();
-        }).catch(error => {
-            res.send(error);
-            res.end();
-        });
-})
-
 // Validar y revalidar token
 router.get( '/renew', validarJWT, revalidarToken );
 

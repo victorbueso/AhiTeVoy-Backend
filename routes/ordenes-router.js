@@ -6,7 +6,7 @@ const router = Router();
 //Servicio para crear una nueva orden enviada desde el cliente
 router.post('/', (req, res) => {
     let ordenesRouter = new Ordenes({
-        cliente: '',
+        cliente: req.body.cliente,
         pedido: req.body.pedido,
         destinoMapa: req.body.destinoMapa,
         statusOrden: req.body.statusOrden,

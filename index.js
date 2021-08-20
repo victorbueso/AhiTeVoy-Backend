@@ -26,7 +26,6 @@ var io = require('socket.io')(server, {
     }
 });
 
-
 //Middleware (Debe ingresarse respectivamente en el orden establecido.)
 app.set('socketio', io);
 app.use(cors());

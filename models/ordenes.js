@@ -14,7 +14,6 @@ const SchemaOrdenes = new Schema({
     },
     cliente: {
         type: String,
-        required: true
     },
     statusOrden: {
         type: Number,

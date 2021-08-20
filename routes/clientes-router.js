@@ -4,9 +4,22 @@ const mongoose = require('mongoose');
 const cliente = require('../models/cliente');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs-extra');
+const uuid = require("uuid");
 const { generarJWT } = require('../helpers/jwt-client');
 const { revalidarToken } = require('../controllers/auth-client');
 const { validarJWT } = require('../middlewares/validar-jwt-client');
+
+let storage = multer.diskStorage({
+    destination: 'uploads',
+    filename: (req, file, cb) => {
+        cb(null, uuid.v4() + path.extname(file.originalname));
+    }
+});
+
+let upload = multer({ storage });
 
 //Crear un usuario cliente
 router.post('/', async (req, res) => {
@@ -55,6 +68,7 @@ router.post('/', async (req, res) => {
     });*/
 });
 
+var idUsuario;
 //Login client user
 router.post('/signin', async (req, res) => {
     const correo = req.body.correo;
@@ -71,6 +85,7 @@ router.post('/signin', async (req, res) => {
     
         //const token = jwt.sign({ _id: user._id }, 'secretkey');
         const token = await generarJWT(user._id);
+        idUsuario = user._id;
         return res.status(200).json({ok: true, token, 'idClient': user._id, 'correo': user.correo });
 
     } catch (error) {
@@ -81,12 +96,24 @@ router.post('/signin', async (req, res) => {
     }
 });
 
+//Obtener todos los clientes (y el cliente logueado)
+router.get('/actual', (req, res) => {
+    cliente.find()
+        .then(result => {
+            res.send(idUsuario);
+            res.end();
+        }).catch(error => {
+            res.send(error);
+            res.end();
+        });
+})
+
 // Validar y revalidar token
 router.get( '/renew', validarJWT, revalidarToken );
 
 //Obtener un client user
 router.get('/:idClient', function(req, res) {
-    usuario.find({ _id: mongoose.Types.ObjectId(req.params.idClient) })
+    cliente.find({ _id: mongoose.Types.ObjectId(req.params.idClient) })
         .then(result => {
             res.send(result[0]);
             res.end();
@@ -95,6 +122,33 @@ router.get('/:idClient', function(req, res) {
             res.end();
         });
 });
+
+//Actualizar el perfil de un cliente
+router.put('/:idCliente', upload.single('imagen'), (req, res) => {
+    cliente.updateOne(
+        {
+            _id: mongoose.Types.ObjectId(req.params.idCliente)
+        },
+        {
+            nombre: req.body.nombre,
+            apellido: req.body.apellido,
+            telefono: req.body.telefono,
+            direccion: req.body.direccion,
+            ciudad: req.body.ciudad,
+            departamento: req.body.departamento,
+            tarjetaCredito: req.body.tarjetaCredito,
+            vencimientoTarjeta: req.body.vencimientoTarjeta,
+            cvv: req.body.cvv,
+            fotoPerfil: req.path.imagen
+        })
+        .then(result => {
+            res.status(200).json({ 'message': 'Información del perfil actualizada con exito' });
+            res.end();
+        }).catch(error => {
+            res.send(error);
+            res.end();
+        });
+})
 
 module.exports = router;
 

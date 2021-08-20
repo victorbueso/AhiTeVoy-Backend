@@ -9,7 +9,6 @@ io.on('connection', (cliente, io) => {
     //Extraemos el nombre de la sala
     const nameRoom  = cliente.handshake.payload;
 
-    
     //Conectamos cliente al sala.
     cliente.on('ordenes-conectar', (payload) =>{
         cliente.join(payload);
@@ -17,28 +16,26 @@ io.on('connection', (cliente, io) => {
         console.log(`Hola dipositivo: ${idHandShake} se unio a la sala ${this.nameRoom}`);
     }) ;
 
-    //Con esto escuchamos las emisiones del motorista
+    //Con esto escuchamos las emisiones del motorista.
     cliente.on('ordenes', mensaje );
 
-
-
-    //Conectamos al motorista y el cliente creando su sala por id de Orden
+    //Conectamos al motorista y el cliente creando su sala por id de Orden.
     cliente.on('estado-conectar', (payload) =>{
         cliente.join(payload.nameRoom);
         console.log(`Tomaste la orden ${this.nameRoom}`);
     }) ;
 
     //Con esto escuchamos las emisiones del estado de la orden por motorista motorista y cliente
+    //para esto emitiremos el id con lat y long.
     cliente.on('estado', actualizarOrden );
 
-
     //Enviar direccion en tiempo real motorista.
-    cliente.on('enviar-dir-motorista', direccionMotorista);
+    cliente.on('marcador', direccionMotorista);
 
     //Mover direccion del motorista en tiempo real.
     cliente.on('mover-dir-motorista', moverMotorista);
     
-    //Configurar usuario conectado
+    //Configurar usuario conectado.
     cliente.on('configurar-usuario', confUsuario) 
 
     //Desconectar

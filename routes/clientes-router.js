@@ -127,7 +127,7 @@ router.put('/:idCliente', upload.single('imagen'), (req, res) => {
             tarjetaCredito: req.body.tarjetaCredito,
             vencimientoTarjeta: req.body.vencimientoTarjeta,
             cvv: req.body.cvv,
-            fotoPerfil: req.path.imagen
+            fotoPerfil: req.file.path
         })
         .then(result => {
             res.status(200).json({ 'message': 'Información del perfil actualizada con exito' });
